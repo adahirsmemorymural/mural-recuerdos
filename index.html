@@ -1,48 +1,27 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Adahir's Memory Mural</title>
-
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Adahir’s Memory Mural 📸</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header class="hero">
-    <h1>Adahir's Memory Mural</h1>
-    <p>Momentos, lugares y recuerdos especiales.</p>
+<header>
+  <h1>Adahir’s Memory Mural 📸</h1>
+  <p>memories, moments & aesthetic life</p>
+
+  <button id="uploadBtn">Subir foto</button>
+  <input type="file" id="fileInput" hidden>
 </header>
 
-<section class="admin-panel">
+<main>
+  <div id="mural"></div>
+</main>
 
-    <h2>Nuevo Recuerdo</h2>
-
-    <input type="file" id="photo">
-
-    <input type="date" id="date">
-
-    <input type="text"
-           id="location"
-           placeholder="Lugar">
-
-    <textarea
-      id="description"
-      placeholder="Descripción del recuerdo">
-    </textarea>
-
-    <button id="uploadBtn">
-        Guardar Recuerdo
-    </button>
-
-</section>
-
-<section id="gallery" class="gallery">
-
-</section>
-
+<!-- Firebase -->
 <script type="module" src="firebase.js"></script>
 <script type="module" src="app.js"></script>
 
