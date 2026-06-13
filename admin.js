@@ -3,23 +3,23 @@ import {
   storage,
   collection,
   addDoc,
-  onSnapshot,
   deleteDoc,
   doc,
   ref,
   uploadBytes,
-  getDownloadURL
+  getDownloadURL,
+  onSnapshot
 } from "./firebase.js";
 
 const mural = document.getElementById("mural");
 
-/* 📤 SUBIR POST */
+/* SUBIR */
 document.getElementById("uploadBtn").addEventListener("click", async () => {
 
   const file = document.getElementById("fileInput").files[0];
   const desc = document.getElementById("descInput").value;
 
-  if (!file) return alert("Selecciona una imagen");
+  if (!file) return alert("Selecciona imagen");
 
   const storageRef = ref(storage, "mural/" + Date.now() + "_" + file.name);
 
@@ -30,14 +30,13 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
     imageUrl: url,
     description: desc || "sin descripción",
     date: new Date().toLocaleDateString(),
-    likes: 0,
-    createdAt: Date.now()
+    likes: 0
   });
 
-  alert("Publicado 👑");
+  alert("Subido 👑");
 });
 
-/* 📡 VER MURAL EN ADMIN */
+/* VER + BORRAR */
 onSnapshot(collection(db, "posts"), (snap) => {
   mural.innerHTML = "";
 
@@ -48,17 +47,14 @@ onSnapshot(collection(db, "posts"), (snap) => {
     card.className = "post";
 
     card.innerHTML = `
-      <img src="${post.imageUrl}" />
-
+      <img src="${post.imageUrl}">
       <div class="info">
         <div class="desc">${post.description}</div>
-        <div class="date">${post.date}</div>
-
-        <button class="delete-btn">🗑 Borrar</button>
+        <button class="download-btn">🗑 Borrar</button>
       </div>
     `;
 
-    card.querySelector(".delete-btn").addEventListener("click", async () => {
+    card.querySelector(".download-btn").addEventListener("click", async () => {
       await deleteDoc(doc(db, "posts", d.id));
     });
 
