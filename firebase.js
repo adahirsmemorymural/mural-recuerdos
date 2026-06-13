@@ -1,31 +1,28 @@
-// Firebase SDK
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-
-import { getFirestore } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-
-import { getStorage } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-storage.js";
-
-// Configuración de tu proyecto
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCHwHssU3NWZHA1cfB5ymYaHI4oYCgKnvk",
-  authDomain: "mural-de-recuerdos.firebaseapp.com",
-  projectId: "mural-de-recuerdos",
-  storageBucket: "mural-de-recuerdos.firebasestorage.app",
-  messagingSenderId: "497026178089",
-  appId: "1:497026178089:web:58aa3e8f373ce8f8199038"
+  apiKey: "TU_API_KEY",
+  authDomain: "TU_AUTH",
+  projectId: "TU_PROJECT",
+  storageBucket: "TU_BUCKET",
+  messagingSenderId: "TU_ID",
+  appId: "TU_APP_ID"
 };
 
-// Inicializar Firebase
+export const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
+export const storage = getStorage(app);
 
-const app = initializeApp(firebaseConfig);
-
-const db = getFirestore(app);
-
-const storage = getStorage(app);
-
-export { db, storage };
-
-import { initializeApp } from "firebase/app";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { getFirestore, collection, addDoc, onSnapshot } from "firebase/firestore";
+export {
+  collection,
+  addDoc,
+  onSnapshot,
+  deleteDoc,
+  doc,
+  updateDoc,
+  ref,
+  uploadBytes,
+  getDownloadURL
+};
