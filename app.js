@@ -7,106 +7,118 @@ import {
 
 const ADMIN_KEY = "mural-secret-2026";
 
+/* 🔐 ADMIN SYSTEM */
 function isAdmin() {
   return localStorage.getItem("adminKey") === ADMIN_KEY;
 }
 
-// activar admin en TU dispositivo (una vez)
-window.makeAdmin = () => {
-  localStorage.setItem("adminKey", ADMIN_KEY);
-  alert("Modo admin activado");
-};
+window.addEventListener("DOMContentLoaded", () => {
 
-// ocultar upload si no eres admin
-if (!isAdmin()) {
-  document.getElementById("uploadBtn").style.display = "none";
-}
+  const adminBtn = document.getElementById("adminBtn");
+  const uploadBtn = document.getElementById("uploadBtn");
+  const fileInput = document.getElementById("fileInput");
+  const mural = document.getElementById("mural");
 
-/* SUBIR IMAGEN */
-document.getElementById("uploadBtn").onclick = () => {
-  document.getElementById("fileInput").click();
-};
+  /* 👑 BOTÓN ADMIN */
+  adminBtn.addEventListener("click", () => {
+    const pass = prompt("Ingresa clave de admin:");
 
-document.getElementById("fileInput").onchange = async (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  const storageRef = ref(storage, "mural/" + file.name);
-  const snap = await uploadBytes(storageRef, file);
-  const url = await getDownloadURL(snap.ref);
-
-  await addDoc(collection(db, "posts"), {
-    imageUrl: url,
-    description: "Sin descripción",
-    date: new Date().toLocaleDateString(),
-    likes: 0
+    if (pass === ADMIN_KEY) {
+      localStorage.setItem("adminKey", ADMIN_KEY);
+      alert("Modo admin activado 👑");
+      location.reload();
+    } else {
+      alert("Clave incorrecta ❌");
+    }
   });
-};
 
+  /* 👀 OCULTAR UPLOAD SI NO ES ADMIN */
+  if (!isAdmin()) {
+    uploadBtn.style.display = "none";
+  }
 
+  /* 📤 SUBIR FOTO */
+  uploadBtn.addEventListener("click", () => {
+    fileInput.click();
+  });
 
-/* RENDER MURAL */
-const mural = document.getElementById("mural");
+  fileInput.addEventListener("change", async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-onSnapshot(collection(db, "posts"), (snap) => {
-  mural.innerHTML = "";
+    const storageRef = ref(storage, "mural/" + file.name);
+    const snap = await uploadBytes(storageRef, file);
+    const url = await getDownloadURL(snap.ref);
 
-  snap.forEach((d) => {
-    const post = d.data();
+    await addDoc(collection(db, "posts"), {
+      imageUrl: url,
+      description: "sin descripción",
+      date: new Date().toLocaleDateString(),
+      likes: 0
+    });
+  });
 
-    const likedKey = "liked_" + d.id;
-    const isLiked = localStorage.getItem(likedKey);
+  /* 📸 MOSTRAR MURAL */
+  onSnapshot(collection(db, "posts"), (snap) => {
+    mural.innerHTML = "";
 
-    const div = document.createElement("div");
-    div.className = "post";
+    snap.forEach((d) => {
+      const post = d.data();
+      const likedKey = "liked_" + d.id;
+      const isLiked = localStorage.getItem(likedKey);
 
-    div.innerHTML = `
-      <img src="${post.imageUrl}" />
+      const div = document.createElement("div");
+      div.className = "post";
 
-      <div class="info">
-        <div class="desc">${post.description}</div>
-        <div class="date">${post.date}</div>
+      div.innerHTML = `
+        <img src="${post.imageUrl}" />
 
-        <div>
-          <span class="likeBtn ${isLiked ? "liked" : ""}">❤</span>
-          <span>${post.likes || 0}</span>
+        <div class="info">
+          <div class="desc">${post.description}</div>
+          <div class="date">${post.date}</div>
+
+          <div>
+            <span class="like ${isLiked ? "liked" : ""}">❤</span>
+            <span>${post.likes || 0}</span>
+          </div>
+
+          ${
+            isAdmin()
+              ? `<div class="admin-actions">
+                  <button onclick="editPost('${d.id}')">Editar</button>
+                  <button onclick="deletePost('${d.id}')">Borrar</button>
+                </div>`
+              : ""
+          }
         </div>
+      `;
 
-        ${
-          isAdmin()
-            ? `<div class="admin-actions">
-                <button onclick="editPost('${d.id}')">Editar</button>
-                <button onclick="deletePost('${d.id}')">Borrar</button>
-              </div>`
-            : ""
-        }
-      </div>
-    `;
+      /* ❤️ LIKE */
+      const likeBtn = div.querySelector(".like");
 
-    /* LIKE */
-    const likeBtn = div.querySelector(".likeBtn");
+      likeBtn.onclick = async () => {
+        if (localStorage.getItem(likedKey)) return;
 
-    likeBtn.onclick = async () => {
-      if (localStorage.getItem(likedKey)) return;
+        localStorage.setItem(likedKey, "true");
 
-      localStorage.setItem(likedKey, "true");
+        await updateDoc(doc(db, "posts", d.id), {
+          likes: (post.likes || 0) + 1
+        });
+      };
 
-      await updateDoc(doc(db, "posts", d.id), {
-        likes: (post.likes || 0) + 1
-      });
-    };
-
-    mural.appendChild(div);
+      mural.appendChild(div);
+    });
   });
+
 });
 
-/* BORRAR (ADMIN) */
+/* 🗑 BORRAR */
 window.deletePost = async (id) => {
   if (!isAdmin()) return;
   await deleteDoc(doc(db, "posts", id));
 };
 
-/* EDITAR (ADMIN) */
+/* ✏️ EDITAR */
 window.editPost = async (id) => {
   if (!isAdmin()) return;
 
@@ -117,24 +129,3 @@ window.editPost = async (id) => {
     description: newDesc
   });
 };
-
-const ADMIN_KEY = "mural-secret-2026";
-
-function isAdmin() {
-  return localStorage.getItem("adminKey") === ADMIN_KEY;
-}
-
-// BOTÓN ADMIN
-document.getElementById("adminBtn").addEventListener("click", () => {
-  const pass = prompt("Ingresa clave de admin:");
-
-  if (pass === ADMIN_KEY) {
-    localStorage.setItem("adminKey", ADMIN_KEY);
-    alert("Ya eres admin");
-
-    // recargar para aplicar cambios
-    location.reload();
-  } else {
-    alert("Clave incorrecta ❌");
-  }
-});
