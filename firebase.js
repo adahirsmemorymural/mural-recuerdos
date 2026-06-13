@@ -1,17 +1,23 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, updateDoc } from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { 
+  getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, updateDoc 
+} from "firebase/firestore";
+
+import {
+  getStorage, ref, uploadBytes, getDownloadURL
+} from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "TU_API_KEY",
-  authDomain: "TU_AUTH",
-  projectId: "TU_PROJECT",
+  authDomain: "TU_AUTH_DOMAIN",
+  projectId: "TU_PROJECT_ID",
   storageBucket: "TU_BUCKET",
-  messagingSenderId: "TU_ID",
+  messagingSenderId: "TU_SENDER_ID",
   appId: "TU_APP_ID"
 };
 
-export const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+
 export const db = getFirestore(app);
 export const storage = getStorage(app);
 
