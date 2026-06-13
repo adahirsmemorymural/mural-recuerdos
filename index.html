@@ -4,27 +4,35 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Adahir’s Memory Mural 📸</title>
+
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header>
-  <h1>Adahir’s Memory Mural 📸</h1>
-  <p>vintage aesthetic memories</p>
+  <!-- HEADER -->
+  <header>
+    <h1>Adahir’s Memory Mural 📸</h1>
+    <p>vintage aesthetic memories</p>
 
-  <button id="adminBtn">👑 Modo Admin</button>
-  <button id="uploadBtn">Subir foto</button>
+    <!-- 👑 BOTÓN ADMIN -->
+    <button id="adminBtn">👑 Modo Admin</button>
 
-  <input type="file" id="fileInput" hidden>
-</header>
+    <!-- 📤 BOTÓN SUBIR -->
+    <button id="uploadBtn">Subir foto</button>
 
-<main>
-  <div id="mural"></div>
-</main>
+    <!-- INPUT OCULTO -->
+    <input type="file" id="fileInput" hidden>
+  </header>
 
-<script type="module" src="firebase.js"></script>
-<script type="module" src="app.js"></script>
+  <!-- MURAL -->
+  <main>
+    <div id="mural"></div>
+  </main>
+
+  <!-- SCRIPTS -->
+  <script type="module" src="firebase.js"></script>
+  <script type="module" src="app.js"></script>
 
 </body>
 </html>
