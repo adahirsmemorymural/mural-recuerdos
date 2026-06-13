@@ -43,6 +43,8 @@ document.getElementById("fileInput").onchange = async (e) => {
   });
 };
 
+
+
 /* RENDER MURAL */
 const mural = document.getElementById("mural");
 
@@ -114,4 +116,10 @@ window.editPost = async (id) => {
   await updateDoc(doc(db, "posts", id), {
     description: newDesc
   });
+};
+
+
+window.makeAdmin = () => {
+  localStorage.setItem("adminKey", "mural-secret-2026");
+  alert("Ya eres admin 👑");
 };
