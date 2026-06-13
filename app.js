@@ -117,3 +117,24 @@ window.editPost = async (id) => {
     description: newDesc
   });
 };
+
+const ADMIN_KEY = "mural-secret-2026";
+
+function isAdmin() {
+  return localStorage.getItem("adminKey") === ADMIN_KEY;
+}
+
+// BOTÓN ADMIN
+document.getElementById("adminBtn").addEventListener("click", () => {
+  const pass = prompt("Ingresa clave de admin:");
+
+  if (pass === ADMIN_KEY) {
+    localStorage.setItem("adminKey", ADMIN_KEY);
+    alert("Ya eres admin");
+
+    // recargar para aplicar cambios
+    location.reload();
+  } else {
+    alert("Clave incorrecta ❌");
+  }
+});
