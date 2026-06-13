@@ -110,3 +110,16 @@ loadMemories();
 });
 
 loadMemories();
+
+const ADMIN_KEY = "mi-mural-2026-secret";
+
+function isAdmin() {
+  return localStorage.getItem("adminKey") === ADMIN_KEY;
+}
+
+// ocultar botón si NO eres admin
+window.addEventListener("load", () => {
+  if (!isAdmin()) {
+    document.getElementById("uploadBtn").style.display = "none";
+  }
+});
