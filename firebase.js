@@ -25,3 +25,7 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 
 export { db, storage };
+
+import { initializeApp } from "firebase/app";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getFirestore, collection, addDoc, onSnapshot } from "firebase/firestore";
