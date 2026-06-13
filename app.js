@@ -117,9 +117,3 @@ window.editPost = async (id) => {
     description: newDesc
   });
 };
-
-
-window.makeAdmin = () => {
-  localStorage.setItem("adminKey", "mural-secret-2026");
-  alert("Ya eres admin 👑");
-};
