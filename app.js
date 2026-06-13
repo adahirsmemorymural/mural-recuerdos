@@ -12,25 +12,29 @@ function isAdmin() {
   return localStorage.getItem("adminKey") === ADMIN_KEY;
 }
 
+
 window.addEventListener("DOMContentLoaded", () => {
 
   const adminBtn = document.getElementById("adminBtn");
-  const uploadBtn = document.getElementById("uploadBtn");
-  const fileInput = document.getElementById("fileInput");
-  const mural = document.getElementById("mural");
 
-  /* 👑 BOTÓN ADMIN */
+  if (!adminBtn) {
+    console.log("❌ No se encontró el botón adminBtn");
+    return;
+  }
+
   adminBtn.addEventListener("click", () => {
     const pass = prompt("Ingresa clave de admin:");
 
-    if (pass === ADMIN_KEY) {
-      localStorage.setItem("adminKey", ADMIN_KEY);
+    if (pass === "mural-secret-2026") {
+      localStorage.setItem("adminKey", "mural-secret-2026");
       alert("Modo admin activado 👑");
       location.reload();
     } else {
       alert("Clave incorrecta ❌");
     }
   });
+
+});
 
   /* 👀 OCULTAR UPLOAD SI NO ES ADMIN */
   if (!isAdmin()) {
