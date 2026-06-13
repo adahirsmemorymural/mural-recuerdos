@@ -1,144 +1,110 @@
 import {
-  db, storage,
-  collection, addDoc, onSnapshot,
-  deleteDoc, doc, updateDoc,
-  ref, uploadBytes, getDownloadURL
+  db,
+  collection,
+  onSnapshot,
+  updateDoc,
+  doc
 } from "./firebase.js";
 
-const ADMIN_KEY = "mural-secret-2026";
+const mural = document.getElementById("mural");
 
-/* 👑 VERIFICAR ADMIN */
-function isAdmin() {
-  return localStorage.getItem("adminKey") === ADMIN_KEY;
+/* ❤️ LIKE SYSTEM */
+function likePost(id, post) {
+  const key = "liked_" + id;
+
+  if (localStorage.getItem(key)) return;
+
+  localStorage.setItem(key, "true");
+
+  updateDoc(doc(db, "posts", id), {
+    likes: (post.likes || 0) + 1
+  });
 }
 
-window.addEventListener("DOMContentLoaded", () => {
+/* 📸 POLAROID DOWNLOAD AESTHETIC */
+function downloadPolaroid(imageUrl) {
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
 
-  const adminBtn = document.getElementById("adminBtn");
-  const uploadBtn = document.getElementById("uploadBtn");
-  const fileInput = document.getElementById("fileInput");
-  const mural = document.getElementById("mural");
+  const img = new Image();
+  img.crossOrigin = "anonymous";
+  img.src = imageUrl;
 
-  /* 🚨 VERIFICACIÓN DE ELEMENTOS */
-  if (!adminBtn || !uploadBtn || !fileInput || !mural) {
-    console.log("❌ Falta algún elemento en HTML");
-    return;
-  }
+  img.onload = () => {
+    canvas.width = 420;
+    canvas.height = 520;
 
-  /* 👑 BOTÓN ADMIN */
-  adminBtn.addEventListener("click", () => {
-    const pass = prompt("Ingresa clave de admin:");
+    /* fondo polaroid */
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    if (pass === ADMIN_KEY) {
-      localStorage.setItem("adminKey", ADMIN_KEY);
-      alert("Modo admin activado 👑");
-      location.reload();
-    } else {
-      alert("Clave incorrecta ❌");
-    }
-  });
+    /* sombra suave */
+    ctx.shadowColor = "rgba(0,0,0,0.15)";
+    ctx.shadowBlur = 20;
 
-  /* 👀 OCULTAR SUBIDA SI NO ES ADMIN */
-  if (!isAdmin()) {
-    uploadBtn.style.display = "none";
-  }
+    /* imagen */
+    ctx.drawImage(img, 25, 25, 370, 370);
 
-  /* 📤 SUBIR IMAGEN */
-  uploadBtn.addEventListener("click", () => {
-    fileInput.click();
-  });
+    ctx.shadowBlur = 0;
 
-  fileInput.addEventListener("change", async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+    /* watermark aesthetic */
+    ctx.fillStyle = "#111";
+    ctx.font = "italic 18px Georgia";
+    ctx.fillText("adahir.diaz", 150, 460);
 
-    try {
-      const storageRef = ref(storage, "mural/" + Date.now() + "_" + file.name);
-      const snap = await uploadBytes(storageRef, file);
-      const url = await getDownloadURL(snap.ref);
+    /* small vintage date stamp style */
+    const now = new Date().toLocaleDateString();
+    ctx.font = "12px Arial";
+    ctx.fillStyle = "#777";
+    ctx.fillText(now, 170, 485);
 
-      await addDoc(collection(db, "posts"), {
-        imageUrl: url,
-        description: "sin descripción",
-        date: new Date().toLocaleDateString(),
-        likes: 0,
-        createdAt: Date.now()
-      });
+    /* download */
+    const link = document.createElement("a");
+    link.download = "memory-polaroid.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  };
+}
 
-    } catch (error) {
-      console.log("Error subiendo imagen:", error);
-      alert("Error al subir imagen");
-    }
-  });
+/* 📡 RENDER MURAL */
+onSnapshot(collection(db, "posts"), (snap) => {
+  mural.innerHTML = "";
 
-  /* 📸 MOSTRAR MURAL */
-  onSnapshot(collection(db, "posts"), (snap) => {
-    mural.innerHTML = "";
+  snap.forEach((d) => {
+    const post = d.data();
+    const likedKey = "liked_" + d.id;
+    const isLiked = localStorage.getItem(likedKey);
 
-    snap.forEach((d) => {
-      const post = d.data();
-      const likedKey = "liked_" + d.id;
-      const isLiked = localStorage.getItem(likedKey);
+    const card = document.createElement("div");
+    card.className = "post";
 
-      const div = document.createElement("div");
-      div.className = "post";
+    card.innerHTML = `
+      <img src="${post.imageUrl}" />
 
-      div.innerHTML = `
-        <img src="${post.imageUrl}" />
+      <div class="info">
+        <div class="desc">${post.description}</div>
+        <div class="date">${post.date}</div>
 
-        <div class="info">
-          <div class="desc">${post.description}</div>
-          <div class="date">${post.date}</div>
-
-          <div>
-            <span class="like ${isLiked ? "liked" : ""}">❤</span>
-            <span>${post.likes || 0}</span>
-          </div>
-
-          ${
-            isAdmin()
-              ? `<div class="admin-actions">
-                  <button onclick="editPost('${d.id}')">Editar</button>
-                  <button onclick="deletePost('${d.id}')">Borrar</button>
-                </div>`
-              : ""
-          }
+        <div>
+          <span class="like ${isLiked ? "liked" : ""}">❤</span>
+          <span>${post.likes || 0}</span>
         </div>
-      `;
 
-      /* ❤️ LIKE */
-      const likeBtn = div.querySelector(".like");
+        <div class="download-btn">⬇ Descargar Polaroid</div>
+      </div>
+    `;
 
-      likeBtn.addEventListener("click", async () => {
-        if (localStorage.getItem(likedKey)) return;
-
-        localStorage.setItem(likedKey, "true");
-
-        await updateDoc(doc(db, "posts", d.id), {
-          likes: (post.likes || 0) + 1
-        });
-      });
-
-      mural.appendChild(div);
+    /* ❤️ LIKE */
+    card.querySelector(".like").addEventListener("click", () => {
+      likePost(d.id, post);
+      card.querySelector(".like").classList.add("liked");
     });
-  });
 
+    /* ⬇ DOWNLOAD */
+    card.querySelector(".download-btn").addEventListener("click", () => {
+      downloadPolaroid(post.imageUrl);
+    });
+
+    mural.appendChild(card);
+  });
 });
-
-/* 🗑 BORRAR (ADMIN) */
-window.deletePost = async (id) => {
-  if (localStorage.getItem("adminKey") !== ADMIN_KEY) return;
-  await deleteDoc(doc(db, "posts", id));
-};
-
-/* ✏️ EDITAR (ADMIN) */
-window.editPost = async (id) => {
-  if (localStorage.getItem("adminKey") !== ADMIN_KEY) return;
-
-  const newDesc = prompt("Nueva descripción:");
-  if (!newDesc) return;
-
-  await updateDoc(doc(db, "posts", id), {
-    description: newDesc
-  });
-};
