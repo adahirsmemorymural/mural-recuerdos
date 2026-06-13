@@ -123,3 +123,24 @@ window.addEventListener("load", () => {
     document.getElementById("uploadBtn").style.display = "none";
   }
 });
+
+document.getElementById("uploadBtn").addEventListener("click", () => {
+  document.getElementById("fileInput").click();
+});
+
+document.getElementById("fileInput").addEventListener("change", async (e) => {
+  const file = e.target.files[0];
+
+  if (!file) return;
+
+  // aquí ya llamas tu Firebase (TU CÓDIGO ACTUAL)
+  const storageRef = ref(storage, 'mural/' + file.name);
+
+  const snapshot = await uploadBytes(storageRef, file);
+  const url = await getDownloadURL(snapshot.ref);
+
+  await addDoc(collection(db, "mural"), {
+    imageUrl: url,
+    createdAt: new Date()
+  });
+});
