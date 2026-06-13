@@ -7,26 +7,30 @@ import {
 
 const ADMIN_KEY = "mural-secret-2026";
 
-/* 🔐 ADMIN SYSTEM */
+/* 👑 VERIFICAR ADMIN */
 function isAdmin() {
   return localStorage.getItem("adminKey") === ADMIN_KEY;
 }
 
-
 window.addEventListener("DOMContentLoaded", () => {
 
   const adminBtn = document.getElementById("adminBtn");
+  const uploadBtn = document.getElementById("uploadBtn");
+  const fileInput = document.getElementById("fileInput");
+  const mural = document.getElementById("mural");
 
-  if (!adminBtn) {
-    console.log("❌ No se encontró el botón adminBtn");
+  /* 🚨 VERIFICACIÓN DE ELEMENTOS */
+  if (!adminBtn || !uploadBtn || !fileInput || !mural) {
+    console.log("❌ Falta algún elemento en HTML");
     return;
   }
 
+  /* 👑 BOTÓN ADMIN */
   adminBtn.addEventListener("click", () => {
     const pass = prompt("Ingresa clave de admin:");
 
-    if (pass === "mural-secret-2026") {
-      localStorage.setItem("adminKey", "mural-secret-2026");
+    if (pass === ADMIN_KEY) {
+      localStorage.setItem("adminKey", ADMIN_KEY);
       alert("Modo admin activado 👑");
       location.reload();
     } else {
@@ -34,14 +38,12 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-});
-
-  /* 👀 OCULTAR UPLOAD SI NO ES ADMIN */
+  /* 👀 OCULTAR SUBIDA SI NO ES ADMIN */
   if (!isAdmin()) {
     uploadBtn.style.display = "none";
   }
 
-  /* 📤 SUBIR FOTO */
+  /* 📤 SUBIR IMAGEN */
   uploadBtn.addEventListener("click", () => {
     fileInput.click();
   });
@@ -50,16 +52,23 @@ window.addEventListener("DOMContentLoaded", () => {
     const file = e.target.files[0];
     if (!file) return;
 
-    const storageRef = ref(storage, "mural/" + file.name);
-    const snap = await uploadBytes(storageRef, file);
-    const url = await getDownloadURL(snap.ref);
+    try {
+      const storageRef = ref(storage, "mural/" + Date.now() + "_" + file.name);
+      const snap = await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(snap.ref);
 
-    await addDoc(collection(db, "posts"), {
-      imageUrl: url,
-      description: "sin descripción",
-      date: new Date().toLocaleDateString(),
-      likes: 0
-    });
+      await addDoc(collection(db, "posts"), {
+        imageUrl: url,
+        description: "sin descripción",
+        date: new Date().toLocaleDateString(),
+        likes: 0,
+        createdAt: Date.now()
+      });
+
+    } catch (error) {
+      console.log("Error subiendo imagen:", error);
+      alert("Error al subir imagen");
+    }
   });
 
   /* 📸 MOSTRAR MURAL */
@@ -100,7 +109,7 @@ window.addEventListener("DOMContentLoaded", () => {
       /* ❤️ LIKE */
       const likeBtn = div.querySelector(".like");
 
-      likeBtn.onclick = async () => {
+      likeBtn.addEventListener("click", async () => {
         if (localStorage.getItem(likedKey)) return;
 
         localStorage.setItem(likedKey, "true");
@@ -108,7 +117,7 @@ window.addEventListener("DOMContentLoaded", () => {
         await updateDoc(doc(db, "posts", d.id), {
           likes: (post.likes || 0) + 1
         });
-      };
+      });
 
       mural.appendChild(div);
     });
@@ -116,15 +125,15 @@ window.addEventListener("DOMContentLoaded", () => {
 
 });
 
-/* 🗑 BORRAR */
+/* 🗑 BORRAR (ADMIN) */
 window.deletePost = async (id) => {
-  if (!isAdmin()) return;
+  if (localStorage.getItem("adminKey") !== ADMIN_KEY) return;
   await deleteDoc(doc(db, "posts", id));
 };
 
-/* ✏️ EDITAR */
+/* ✏️ EDITAR (ADMIN) */
 window.editPost = async (id) => {
-  if (!isAdmin()) return;
+  if (localStorage.getItem("adminKey") !== ADMIN_KEY) return;
 
   const newDesc = prompt("Nueva descripción:");
   if (!newDesc) return;
