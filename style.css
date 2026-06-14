@@ -22,7 +22,6 @@ color:#2d2d2d;
 }
 
 header {
-font-family: 'Karrilee', sans-serif;
 text-align:center;
 padding:40px 20px;
 background:white;
@@ -33,12 +32,14 @@ z-index:100;
 }
 
 header h1{
+font-family: 'Karrilee', sans-serif;
 font-size:2.3rem;
 font-weight:700;
 margin-bottom:10px;
 }
 
 header p{
+font-family: 'Karrilee', sans-serif;
 color:#777;
 }
 
