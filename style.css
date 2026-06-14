@@ -26,22 +26,14 @@ top:0;
 z-index:100;
 }
 
-@font-face {
-  font-family: 'Karrilee';
-  src: url('./fonts/Karrilee.otf') format('opentype');
-}
-
 header h1{
-color: #5C6482;
-font-size: 2.3rem;
+font-size:2.3rem;
 font-weight:700;
 margin-bottom:10px;
 }
 
 header p{
-  font-family: 'Karrilee', sans-serif;
-}
-color:#08385E;
+color:#777;
 }
 
 .gallery{
