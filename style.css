@@ -27,7 +27,7 @@ z-index:100;
 }
 @font-face {
     font-family: 'Karrile';
-    src: url('./fonts/Karrile.otf') format('truetype');
+    src: url('./fonts/Karrile.otf') format('opentype');
 }
 
 header h1{
