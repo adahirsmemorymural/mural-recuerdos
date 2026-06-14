@@ -1,105 +1,62 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Acceso Administrador</title>
-
 <link rel="stylesheet" href="style.css">
-
 </head>
-
 <body>
-
 <div class="login-screen">
-
-<div class="login-card">
-
-<h1>🔐 Admin Login</h1>
-
-<p>
-Inicia sesión con tu cuenta Google para administrar el mural.
-</p>
-
-<button
-id="googleLogin"
-class="primary-btn">
-
-Entrar con Google
-
-</button>
-
+  <div class="login-card">
+    <h1>🔐 Admin Login</h1>
+    <p>
+      Accede con tu cuenta Google para administrar el mural.
+    </p>
+    <button
+      id="googleLogin"
+      class="primary-btn">
+      Entrar con Google
+    </button>
+  </div>
 </div>
-
-</div>
-
 <script type="module">
-
 import {
-auth,
-provider
+  auth,
+  provider
 }
 from "./firebase.js";
-
 import {
-signInWithRedirect,
-getRedirectResult
+  signInWithRedirect
 }
 from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-
 const btn =
-document.getElementById("googleLogin");
-
+document.getElementById(
+  "googleLogin"
+);
 btn.addEventListener(
-"click",
-() => {
-
-signInWithRedirect(
-auth,
-provider
+  "click",
+  async () => {
+    try {
+      alert(
+        "Iniciando sesión..."
+      );
+      await signInWithRedirect(
+        auth,
+        provider
+      );
+    }
+    catch(error){
+      alert(
+        "Error: " +
+        error.message
+      );
+      console.error(
+        error
+      );
+    }
+  }
 );
-
-}
-);
-
-try {
-
-const result =
-await getRedirectResult(auth);
-
-if(result){
-
-const email =
-result.user.email;
-
-if(
-email ===
-"edgardiazayala62@gmail.com"
-){
-
-window.location.href =
-"admin.html";
-
-}else{
-
-alert(
-"No eres administrador"
-);
-
-}
-
-}
-
-}catch(error){
-
-console.log(error);
-
-}
-
 </script>
-
 </body>
-
 </html>
