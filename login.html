@@ -1,23 +1,65 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Prueba Firebase</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Admin</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<button id="btn">
-Probar Firebase
-</button>
+<div class="login-screen">
+  <div class="login-card">
+    <h1>🔐 Admin Login</h1>
+    <button id="loginBtn" class="primary-btn">
+      Entrar con Google
+    </button>
+    <p id="status"></p>
+  </div>
+</div>
 <script type="module">
-import { auth }
-from "./firebase.js";
-document
-.getElementById("btn")
-.addEventListener(
+import {
+  auth,
+  provider
+} from "./firebase.js";
+import {
+  signInWithPopup
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+const btn =
+document.getElementById("loginBtn");
+const status =
+document.getElementById("status");
+btn.addEventListener(
 "click",
-()=>{
-alert("Firebase cargó correctamente");
-});
+async()=>{
+try{
+status.textContent =
+"Abriendo Google...";
+const result =
+await signInWithPopup(
+auth,
+provider
+);
+const email =
+result.user.email;
+if(
+email ===
+"edgardiazayala62@gmail.com"
+){
+window.location.href =
+"admin.html";
+}else{
+alert(
+"No eres administrador"
+);
+}
+}catch(error){
+alert(
+error.message
+);
+console.error(error);
+}
+}
+);
 </script>
 </body>
 </html>
