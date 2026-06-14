@@ -22,20 +22,61 @@ color:#2d2d2d;
 }
 
 header {
-text-align:center;
-padding:40px 20px;
-background:white;
-box-shadow:0 2px 12px rgba(0,0,0,.08);
-position:sticky;
-top:0;
-z-index:100;
+  text-align: center;
+  padding: 40px 20px;
+  background: white;
+  box-shadow: 0 2px 12px rgba(0,0,0,.08);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-header h1{
-font-family: 'Karrilee', sans-serif;
-font-size:2.3rem;
-font-weight:700;
-margin-bottom:10px;
+header h1 {
+  font-family: 'Karrilee', sans-serif;
+  font-size: 2.3rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+
+  /* color base */
+  color: #485D78;
+
+  /* necesario para el efecto */
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+
+/* capa de brillo */
+header h1::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 80%;
+  height: 100%;
+
+  /* destello blanco suave */
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255,255,255,0) 35%,
+    rgba(255,255,255,0.9) 50%,
+    rgba(255,255,255,0) 65%,
+    transparent 100%
+  );
+
+  transform: skewX(-20deg);
+  animation: shine 3s infinite;
+}
+
+/* animación del destello */
+@keyframes shine {
+  0% {
+    left: -150%;
+  }
+  100% {
+    left: 150%;
+  }
 }
 
 header p{
