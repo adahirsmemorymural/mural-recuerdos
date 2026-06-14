@@ -1,61 +1,25 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Acceso Administrador</title>
-<link rel="stylesheet" href="style.css">
+<title>Prueba</title>
 </head>
 <body>
-<div class="login-screen">
-  <div class="login-card">
-    <h1>🔐 Admin Login</h1>
-    <p>
-      Accede con tu cuenta Google para administrar el mural.
-    </p>
-    <button
-      id="googleLogin"
-      class="primary-btn">
-      Entrar con Google
-    </button>
-  </div>
-</div>
-<script type="module">
-import {
-  auth,
-  provider
-}
-from "./firebase.js";
-import {
-  signInWithRedirect
-}
-from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-const btn =
-document.getElementById(
-  "googleLogin"
+<h1>Prueba de Botón</h1>
+<button id="testBtn">
+Púlsame
+</button>
+<script>
+document
+.getElementById("testBtn")
+.addEventListener(
+"click",
+function(){
+alert(
+"El JavaScript funciona"
 );
-btn.addEventListener(
-  "click",
-  async () => {
-    try {
-      alert(
-        "Iniciando sesión..."
-      );
-      await signInWithRedirect(
-        auth,
-        provider
-      );
-    }
-    catch(error){
-      alert(
-        "Error: " +
-        error.message
-      );
-      console.error(
-        error
-      );
-    }
-  }
+}
 );
 </script>
 </body>
