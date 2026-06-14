@@ -32,7 +32,16 @@ z-index:100;
 }
 
 header h1{
-color: #4E6787;
+  @keyframes shine {
+  0% { background-position: 0%; }
+  100% { background-position: 200%; }
+}
+h1 {
+  background: linear-gradient(90deg, #fff, #a855f7, #fff);
+  background-size: 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 2s infinite linear;
 font-family: 'Karrilee', sans-serif;
 font-size:2.3rem;
 font-weight:700;
