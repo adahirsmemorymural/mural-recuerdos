@@ -16,7 +16,13 @@ min-height:100vh;
 color:#2d2d2d;
 }
 
-header{
+@font-face {
+  font-family: 'Karrilee';
+  src: url('./fonts/Karrilee.otf') format('opentype');
+}
+
+header {
+font-family: 'Karrilee', sans-serif;
 text-align:center;
 padding:40px 20px;
 background:white;
