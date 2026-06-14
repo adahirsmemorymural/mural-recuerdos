@@ -1,43 +1,42 @@
-import { initializeApp } from "firebase/app";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  onSnapshot,
-  updateDoc,
-  deleteDoc,
-  doc
-} from "firebase/firestore";
+// firebase.js
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 
 import {
-  getStorage,
-  ref,
-  uploadBytes,
-  getDownloadURL
-} from "firebase/storage";
+  getFirestore
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+import {
+  getStorage
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-storage.js";
+
+import {
+  getAuth,
+  GoogleAuthProvider
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_AUTH_DOMAIN",
-  projectId: "TU_PROJECT_ID",
-  storageBucket: "TU_PROJECT_ID.appspot.com",
-  messagingSenderId: "TU_SENDER_ID",
-  appId: "TU_APP_ID"
+  apiKey: "AIzaSyCHwHssU3NWZHA1cfB5ymYaHI4oYCgKnvk",
+  authDomain: "mural-de-recuerdos.firebaseapp.com",
+  projectId: "mural-de-recuerdos",
+  storageBucket: "mural-de-recuerdos.firebasestorage.app",
+  messagingSenderId: "497026178089",
+  appId: "1:497026178089:web:58aa3e8f373ce8f8199038"
 };
 
 const app = initializeApp(firebaseConfig);
 
-export const db = getFirestore(app);
-export const storage = getStorage(app);
+const db = getFirestore(app);
+
+const storage = getStorage(app);
+
+const auth = getAuth(app);
+
+const provider = new GoogleAuthProvider();
 
 export {
-  collection,
-  addDoc,
-  onSnapshot,
-  updateDoc,
-  deleteDoc,
-  doc,
-  ref,
-  uploadBytes,
-  getDownloadURL
+  db,
+  storage,
+  auth,
+  provider
 };
