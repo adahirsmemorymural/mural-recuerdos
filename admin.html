@@ -1,31 +1,83 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin 👑</title>
-  <link rel="stylesheet" href="style.css">
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Panel Administrador
+</title>
+
+<link rel="stylesheet"
+href="style.css">
+
 </head>
 
 <body>
 
-<header class="topbar">
-  <h1>Panel Admin 👑</h1>
-  <p>control del mural</p>
+<header>
+
+<h1>
+📸 Adahir's Memory Mural
+</h1>
+
+<p>
+Panel de Administración
+</p>
+
 </header>
 
-<section class="admin-panel">
-  <input type="file" id="fileInput">
-  <input type="text" id="descInput" placeholder="Descripción...">
-  <button id="uploadBtn">Subir</button>
-</section>
+<div class="admin-container">
 
-<main>
-  <div id="mural"></div>
-</main>
+<div class="admin-card">
 
-<script type="module" src="firebase.js"></script>
-<script type="module" src="admin.js"></script>
+<h2>
+Nuevo Recuerdo
+</h2>
+
+<input
+type="file"
+id="photo">
+
+<input
+type="date"
+id="date">
+
+<input
+type="text"
+id="place"
+placeholder="Lugar">
+
+<textarea
+id="description"
+placeholder="Descripción">
+</textarea>
+
+<button
+id="uploadBtn"
+class="primary-btn">
+
+Guardar Recuerdo
+
+</button>
+
+</div>
+
+<div id="adminGallery">
+
+</div>
+
+</div>
+
+<script
+type="module"
+src="admin.js">
+</script>
 
 </body>
+
 </html>
