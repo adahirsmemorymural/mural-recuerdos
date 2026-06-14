@@ -1,70 +1,105 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
+
 <head>
 <meta charset="UTF-8">
-<title>Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Acceso Administrador</title>
+
+<link rel="stylesheet" href="style.css">
+
 </head>
+
 <body>
 
-<h1>Iniciar Sesión</h1>
+<div class="login-screen">
 
-<button id="loginBtn">
+<div class="login-card">
+
+<h1>🔐 Admin Login</h1>
+
+<p>
+Inicia sesión con tu cuenta Google para administrar el mural.
+</p>
+
+<button
+id="googleLogin"
+class="primary-btn">
+
 Entrar con Google
+
 </button>
+
+</div>
+
+</div>
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import {
+auth,
+provider
+}
+from "./firebase.js";
 
 import {
-getAuth,
-GoogleAuthProvider,
-signInWithPopup
+signInWithRedirect,
+getRedirectResult
 }
 from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCHwHssU3NWZHA1cfB5ymYaHI4oYCgKnvk",
-  authDomain: "mural-de-recuerdos.firebaseapp.com",
-  projectId: "mural-de-recuerdos",
-  storageBucket: "mural-de-recuerdos.firebasestorage.app",
-  messagingSenderId: "497026178089",
-  appId: "1:497026178089:web:58aa3e8f373ce8f8199038"
-};
+const btn =
+document.getElementById("googleLogin");
 
-const app = initializeApp(firebaseConfig);
+btn.addEventListener(
+"click",
+() => {
 
-const auth = getAuth(app);
-
-const provider = new GoogleAuthProvider();
-
-document
-.getElementById("loginBtn")
-.addEventListener("click", async () => {
-
-try {
-
-const result =
-await signInWithPopup(
+signInWithRedirect(
 auth,
 provider
 );
 
+}
+);
+
+try {
+
+const result =
+await getRedirectResult(auth);
+
+if(result){
+
+const email =
+result.user.email;
+
+if(
+email ===
+"edgardiazayala62@gmail.com"
+){
+
+window.location.href =
+"admin.html";
+
+}else{
+
 alert(
-"Bienvenido " +
-result.user.email
+"No eres administrador"
 );
 
 }
-catch(error){
-
-alert(error.message);
 
 }
 
-});
+}catch(error){
+
+console.log(error);
+
+}
 
 </script>
 
 </body>
+
 </html>
