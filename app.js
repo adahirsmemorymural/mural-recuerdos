@@ -1,81 +1,271 @@
 import {
-  db,
-  collection,
-  onSnapshot,
-  updateDoc,
-  doc
-} from "./firebase.js";
+db
+}
+from "./firebase.js";
 
-const mural = document.getElementById("mural");
+import {
+collection,
+getDocs,
+query,
+orderBy,
+doc,
+updateDoc,
+increment
+}
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-function downloadPolaroid(imageUrl) {
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
+const gallery =
+document.getElementById(
+"gallery"
+);
 
-  const img = new Image();
-  img.crossOrigin = "anonymous";
-  img.src = imageUrl;
+const modal =
+document.getElementById(
+"imageModal"
+);
 
-  img.onload = () => {
-    canvas.width = 420;
-    canvas.height = 520;
+const modalImage =
+document.getElementById(
+"modalImage"
+);
 
-    ctx.fillStyle = "#fff";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+const closeModal =
+document.getElementById(
+"closeModal"
+);
 
-    ctx.drawImage(img, 25, 25, 370, 370);
+/* ==========================
+   MODAL FOTO
+========================== */
 
-    ctx.fillStyle = "#111";
-    ctx.font = "italic 18px Georgia";
-    ctx.fillText("adahir.diaz", 150, 460);
+closeModal.addEventListener(
+"click",
+()=>{
 
-    const link = document.createElement("a");
-    link.download = "polaroid.png";
-    link.href = canvas.toDataURL("image/png");
-    link.click();
-  };
+modal.style.display =
+"none";
+
+}
+);
+
+modal.addEventListener(
+"click",
+()=>{
+
+modal.style.display =
+"none";
+
+}
+);
+
+/* ==========================
+   LIKES
+========================== */
+
+function hasLiked(id){
+
+return localStorage.getItem(
+"liked_" + id
+);
+
 }
 
-onSnapshot(collection(db, "posts"), (snap) => {
-  mural.innerHTML = "";
+function saveLike(id){
 
-  snap.forEach((d) => {
-    const post = d.data();
-    const likedKey = "liked_" + d.id;
-    const isLiked = localStorage.getItem(likedKey);
+localStorage.setItem(
+"liked_" + id,
+"true"
+);
 
-    const card = document.createElement("div");
-    card.className = "post";
+}
 
-    card.innerHTML = `
-      <img src="${post.imageUrl}">
-      <div class="info">
-        <div class="desc">${post.description}</div>
-        <div class="date">${post.date}</div>
+/* ==========================
+   CARGAR RECUERDOS
+========================== */
 
-        <div>
-          <span class="like ${isLiked ? "liked" : ""}">❤</span>
-          <span>${post.likes || 0}</span>
-        </div>
+async function loadMemories(){
 
-        <div class="download-btn">Descargar polaroid</div>
-      </div>
-    `;
+gallery.innerHTML = "";
 
-    card.querySelector(".like").addEventListener("click", async () => {
-      if (localStorage.getItem(likedKey)) return;
+const q =
+query(
+collection(
+db,
+"recuerdos"
+),
+orderBy(
+"createdAt",
+"desc"
+)
+);
 
-      localStorage.setItem(likedKey, "true");
+const snapshot =
+await getDocs(q);
 
-      await updateDoc(doc(db, "posts", d.id), {
-        likes: (post.likes || 0) + 1
-      });
-    });
+snapshot.forEach(
+(memory)=>{
 
-    card.querySelector(".download-btn").addEventListener("click", () => {
-      downloadPolaroid(post.imageUrl);
-    });
+const data =
+memory.data();
 
-    mural.appendChild(card);
-  });
-});
+const card =
+document.createElement(
+"div"
+);
+
+card.className =
+"polaroid";
+
+card.innerHTML = `
+
+<img
+src="${data.imageUrl}"
+class="memory-image">
+
+<div
+class="memory-info">
+
+<div
+class="memory-place">
+
+📍 ${data.place}
+
+</div>
+
+<div
+class="memory-date">
+
+🗓 ${data.date}
+
+</div>
+
+<div
+class="memory-description">
+
+${data.description}
+
+</div>
+
+<div
+class="like-bar">
+
+<button
+class="like-btn"
+data-id="${memory.id}">
+
+❤️
+
+</button>
+
+<span
+class="likes-count">
+
+${data.likes || 0}
+
+</span>
+
+</div>
+
+</div>
+
+`;
+
+gallery.appendChild(
+card
+);
+
+const image =
+card.querySelector(
+".memory-image"
+);
+
+image.addEventListener(
+"click",
+()=>{
+
+modal.style.display =
+"flex";
+
+modalImage.src =
+data.imageUrl;
+
+}
+);
+
+const likeBtn =
+card.querySelector(
+".like-btn"
+);
+
+const count =
+card.querySelector(
+".likes-count"
+);
+
+if(
+hasLiked(memory.id)
+){
+
+likeBtn.disabled =
+true;
+
+likeBtn.innerHTML =
+"❤️";
+
+}
+
+likeBtn.addEventListener(
+"click",
+async()=>{
+
+if(
+hasLiked(
+memory.id
+)
+){
+return;
+}
+
+try{
+
+await updateDoc(
+doc(
+db,
+"recuerdos",
+memory.id
+),
+{
+likes:
+increment(1)
+}
+);
+
+saveLike(
+memory.id
+);
+
+count.textContent =
+parseInt(
+count.textContent
+)+1;
+
+likeBtn.disabled =
+true;
+
+}catch(error){
+
+console.error(
+error
+);
+
+}
+
+}
+);
+
+}
+);
+
+}
+
+loadMemories();
