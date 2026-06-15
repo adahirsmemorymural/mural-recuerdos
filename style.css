@@ -113,6 +113,50 @@ header p {
   }
 }
 
+.stars {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.stars span {
+  position: absolute;
+  color: rgba(255,255,255,.9);
+  font-size: 14px;
+  animation: floatStar linear infinite;
+  text-shadow:
+    0 0 6px rgba(255,255,255,.8),
+    0 0 12px rgba(255,255,255,.4);
+}
+
+.stars span:nth-child(1){left:10%;animation-duration:9s;animation-delay:0s;}
+.stars span:nth-child(2){left:25%;animation-duration:12s;animation-delay:-2s;}
+.stars span:nth-child(3){left:40%;animation-duration:10s;animation-delay:-5s;}
+.stars span:nth-child(4){left:60%;animation-duration:14s;animation-delay:-3s;}
+.stars span:nth-child(5){left:78%;animation-duration:11s;animation-delay:-7s;}
+.stars span:nth-child(6){left:90%;animation-duration:13s;animation-delay:-1s;}
+
+@keyframes floatStar {
+  from {
+    transform: translateY(120px) scale(.8);
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  85% {
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(-120px) scale(1.2);
+    opacity: 0;
+  }
+}
+
 .gallery{
 padding:30px;
 display:grid;
