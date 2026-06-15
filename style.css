@@ -69,29 +69,34 @@ header h1 {
 
 header p {
   font-family: 'Karrilee', sans-serif;
-  font-size: 1.35rem; /* un poco más grande */
+  font-size: 1.4rem;
   color: #fff;
   position: relative;
   z-index: 2;
 
+  /* brillo más visible pero elegante */
   text-shadow:
-    0 0 2px rgba(255,255,255,0.35),
-    0 0 5px rgba(255,255,255,0.18);
+    0 0 3px rgba(255,255,255,0.45),
+    0 0 8px rgba(255,255,255,0.25),
+    0 0 14px rgba(255,255,255,0.10);
 
-  overflow: hidden;
+  /* efecto de aparición */
   white-space: nowrap;
+  overflow: hidden;
   width: 0;
 
-  animation: typing 2.2s steps(40, end) forwards;
+  animation: revealText 2s cubic-bezier(.22,.61,.36,1) forwards;
 }
 
-@keyframes typing {
+@keyframes revealText {
   from {
     width: 0;
+    opacity: 0;
   }
 
   to {
     width: 100%;
+    opacity: 1;
   }
 }
 
