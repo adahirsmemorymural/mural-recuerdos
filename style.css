@@ -69,33 +69,32 @@ header h1 {
 
 header p {
   font-family: 'Karrilee', sans-serif;
+  font-size: 1.35rem; /* un poco más grande */
   color: #fff;
   position: relative;
   z-index: 2;
 
-  /* brillo más suave que el h1 */
   text-shadow:
-    0 0 1px rgba(255,255,255,0.25),
-    0 0 3px rgba(255,255,255,0.10);
+    0 0 2px rgba(255,255,255,0.35),
+    0 0 5px rgba(255,255,255,0.18);
 
-  /* aparece una sola vez */
-  opacity: 0;
-  transform: translateX(-30px);
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
 
-  animation: revealText 1.2s ease-out forwards;
+  animation: typing 2.2s steps(40, end) forwards;
 }
 
-@keyframes revealText {
+@keyframes typing {
   from {
-    opacity: 0;
-    transform: translateX(-30px);
+    width: 0;
   }
 
   to {
-    opacity: 1;
-    transform: translateX(0);
+    width: 100%;
   }
 }
+
 
 /* ⭐ Contenedor de estrellas */
 .stars {
