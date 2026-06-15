@@ -21,6 +21,7 @@ color:#2d2d2d;
   src: url('./fonts/Karrilee.otf') format('opentype');
 }
 
+
 header {
   text-align: center;
   padding: 40px 20px;
@@ -29,28 +30,7 @@ header {
   position: sticky;
   top: 0;
   z-index: 100;
-  overflow: hidden; /* necesario para las estrellas */
-}
-
-/* ⭐ Estrellas flotantes */
-header::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-
-  background-image:
-    radial-gradient(circle, rgba(255,255,255,.95) 0 2px, transparent 2px),
-    radial-gradient(circle, rgba(255,255,255,.8) 0 1.5px, transparent 1.5px),
-    radial-gradient(circle, rgba(255,255,255,.7) 0 1px, transparent 1px);
-
-  background-size:
-    180px 180px,
-    140px 140px,
-    220px 220px;
-
-  animation: starsDrift 18s linear infinite;
+  overflow: hidden;
 }
 
 header h1 {
@@ -66,7 +46,6 @@ header h1 {
   color: #fff;
   background: transparent;
 
-  /* ✨ brillo ultra sutil (máxima nitidez) */
   text-shadow:
     0 0 2px rgba(255,255,255,0.35),
     0 0 4px rgba(255,255,255,0.18);
@@ -74,7 +53,6 @@ header h1 {
   animation: subtleGlow 4s ease-in-out infinite;
 }
 
-/* ✨ casi imperceptible, sin “pulsación fuerte” */
 @keyframes subtleGlow {
   0%, 100% {
     text-shadow:
@@ -96,50 +74,70 @@ header p {
   z-index: 2;
 }
 
-/* ⭐ Movimiento de estrellas */
-@keyframes starsDrift {
-  from {
-    background-position:
-      0 0,
-      0 0,
-      0 0;
-  }
-
-  to {
-    background-position:
-      0 -180px,
-      0 -140px,
-      0 -220px;
-  }
-}
-
+/* ⭐ Contenedor de estrellas */
 .stars {
   position: absolute;
   inset: 0;
   pointer-events: none;
   overflow: hidden;
+  z-index: 1;
 }
 
+/* ⭐ Estrellas brillantes */
 .stars span {
   position: absolute;
-  color: rgba(255,255,255,.9);
-  font-size: 14px;
-  animation: floatStar linear infinite;
+  color: #fff;
+  font-size: 18px;
+
   text-shadow:
-    0 0 6px rgba(255,255,255,.8),
-    0 0 12px rgba(255,255,255,.4);
+    0 0 8px rgba(255,255,255,.95),
+    0 0 16px rgba(255,255,255,.7),
+    0 0 24px rgba(255,255,255,.4);
+
+  animation: floatStar linear infinite;
 }
 
-.stars span:nth-child(1){left:10%;animation-duration:9s;animation-delay:0s;}
-.stars span:nth-child(2){left:25%;animation-duration:12s;animation-delay:-2s;}
-.stars span:nth-child(3){left:40%;animation-duration:10s;animation-delay:-5s;}
-.stars span:nth-child(4){left:60%;animation-duration:14s;animation-delay:-3s;}
-.stars span:nth-child(5){left:78%;animation-duration:11s;animation-delay:-7s;}
-.stars span:nth-child(6){left:90%;animation-duration:13s;animation-delay:-1s;}
+/* Posiciones */
+.stars span:nth-child(1){
+  left: 10%;
+  animation-duration: 9s;
+  animation-delay: 0s;
+}
 
+.stars span:nth-child(2){
+  left: 25%;
+  animation-duration: 12s;
+  animation-delay: -2s;
+}
+
+.stars span:nth-child(3){
+  left: 40%;
+  animation-duration: 10s;
+  animation-delay: -5s;
+}
+
+.stars span:nth-child(4){
+  left: 60%;
+  animation-duration: 14s;
+  animation-delay: -3s;
+}
+
+.stars span:nth-child(5){
+  left: 78%;
+  animation-duration: 11s;
+  animation-delay: -7s;
+}
+
+.stars span:nth-child(6){
+  left: 90%;
+  animation-duration: 13s;
+  animation-delay: -1s;
+}
+
+/* Movimiento */
 @keyframes floatStar {
   from {
-    transform: translateY(120px) scale(.8);
+    transform: translateY(120px) scale(.8) rotate(0deg);
     opacity: 0;
   }
 
@@ -152,10 +150,11 @@ header p {
   }
 
   to {
-    transform: translateY(-120px) scale(1.2);
+    transform: translateY(-120px) scale(1.2) rotate(180deg);
     opacity: 0;
   }
 }
+
 
 .gallery{
 padding:30px;
