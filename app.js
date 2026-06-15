@@ -14,6 +14,18 @@ increment
 }
 from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
+const subtitle = document.getElementById('subtitle');
+const text = subtitle.textContent;
+
+subtitle.innerHTML = '';
+
+[...text].forEach((char, i) => {
+  const span = document.createElement('span');
+  span.textContent = char === ' ' ? '\u00A0' : char;
+  span.style.animationDelay = `${i * 0.04}s`;
+  subtitle.appendChild(span);
+});
+
 const gallery =
 document.getElementById(
 "gallery"
