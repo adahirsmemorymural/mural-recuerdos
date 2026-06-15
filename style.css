@@ -29,6 +29,28 @@ header {
   position: sticky;
   top: 0;
   z-index: 100;
+  overflow: hidden; /* necesario para las estrellas */
+}
+
+/* ⭐ Estrellas flotantes */
+header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,.95) 0 2px, transparent 2px),
+    radial-gradient(circle, rgba(255,255,255,.8) 0 1.5px, transparent 1.5px),
+    radial-gradient(circle, rgba(255,255,255,.7) 0 1px, transparent 1px);
+
+  background-size:
+    180px 180px,
+    140px 140px,
+    220px 220px;
+
+  animation: starsDrift 18s linear infinite;
 }
 
 header h1 {
@@ -39,6 +61,7 @@ header h1 {
 
   position: relative;
   display: inline-block;
+  z-index: 2;
 
   color: #fff;
   background: transparent;
@@ -69,8 +92,26 @@ header h1 {
 header p {
   font-family: 'Karrilee', sans-serif;
   color: #fff;
+  position: relative;
+  z-index: 2;
 }
 
+/* ⭐ Movimiento de estrellas */
+@keyframes starsDrift {
+  from {
+    background-position:
+      0 0,
+      0 0,
+      0 0;
+  }
+
+  to {
+    background-position:
+      0 -180px,
+      0 -140px,
+      0 -220px;
+  }
+}
 
 .gallery{
 padding:30px;
