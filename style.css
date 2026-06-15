@@ -74,21 +74,27 @@ header p {
   position: relative;
   z-index: 2;
 
-  /* brillo más visible pero elegante */
   text-shadow:
     0 0 3px rgba(255,255,255,0.45),
     0 0 8px rgba(255,255,255,0.25),
     0 0 14px rgba(255,255,255,0.10);
-
-  /* efecto de aparición */
-  white-space: nowrap;
-  overflow: hidden;
-  width: 0;
-
-  animation: revealText 2s cubic-bezier(.22,.61,.36,1) forwards;
 }
 
+header p span {
+  opacity: 0;
+  display: inline-block;
+  animation: letterReveal 0.8s ease forwards;
+}
 
+@keyframes letterReveal {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
 
 /* ⭐ Contenedor de estrellas */
 .stars {
