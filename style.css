@@ -33,7 +33,7 @@ header {
 
 header h1 {
   font-family: 'Karrilee', sans-serif;
-  font-size: 2.6rem; /* más grande */
+  font-size: 2.6rem;
   font-weight: 700;
   margin-bottom: 10px;
 
@@ -42,73 +42,29 @@ header h1 {
   color: #fff;
   background: transparent;
 
-  /* brillo más limpio (menos borroso) */
+  /* ✨ brillo más fino, menos expansión (~10% menos) */
   text-shadow:
-    0 0 4px #fff,
-    0 0 8px #fff,
-    0 0 14px rgba(255,255,255,0.9);
+    0 0 3px #fff,
+    0 0 6px #fff,
+    0 0 10px rgba(255,255,255,0.85);
 
-  animation: glow 2s ease-in-out infinite alternate;
+  animation: glow 2.2s ease-in-out infinite alternate;
 }
 
-/* brillo más definido */
+/* ✨ animación más estable y nítida */
 @keyframes glow {
   from {
     text-shadow:
-      0 0 3px #fff,
-      0 0 6px #fff,
-      0 0 12px rgba(255,255,255,0.7);
+      0 0 2px #fff,
+      0 0 5px #fff,
+      0 0 8px rgba(255,255,255,0.7);
   }
 
   to {
     text-shadow:
-      0 0 6px #fff,
-      0 0 12px #fff,
-      0 0 20px rgba(255,255,255,0.9);
-  }
-}
-
-/* 🌟 PARTICULAS */
-header h1::before,
-header h1::after {
-  content: "";
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  background: #fff;
-  border-radius: 50%;
-  box-shadow:
-    0 0 6px #fff,
-    20px 10px 8px #fff,
-    -15px 15px 6px #fff,
-    30px -10px 10px #fff,
-    -25px -10px 8px #fff;
-
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0.6;
-
-  animation: particles 3s infinite ease-in-out;
-}
-
-header h1::after {
-  animation-delay: 1.5s;
-  opacity: 0.4;
-}
-
-@keyframes particles {
-  0% {
-    transform: translate(-50%, -50%) scale(0.8);
-    opacity: 0.2;
-  }
-  50% {
-    transform: translate(-50%, -55%) scale(1.2);
-    opacity: 0.7;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(0.8);
-    opacity: 0.2;
+      0 0 4px #fff,
+      0 0 8px #fff,
+      0 0 12px rgba(255,255,255,0.9);
   }
 }
 
