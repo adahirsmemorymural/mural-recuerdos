@@ -72,6 +72,29 @@ header p {
   color: #fff;
   position: relative;
   z-index: 2;
+
+  /* brillo más suave que el h1 */
+  text-shadow:
+    0 0 1px rgba(255,255,255,0.25),
+    0 0 3px rgba(255,255,255,0.10);
+
+  /* aparece una sola vez */
+  opacity: 0;
+  transform: translateX(-30px);
+
+  animation: revealText 1.2s ease-out forwards;
+}
+
+@keyframes revealText {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 /* ⭐ Contenedor de estrellas */
